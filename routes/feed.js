@@ -6,6 +6,6 @@ const router = express.Router();
 router
     .get('/posts/:id', getAllFeedPosts)
     .get('/stories',getStories)
-    .get('/suggestions', getSuggestions)
+    .get('/suggestions/:id', getSuggestions)
 
 module.exports = router;

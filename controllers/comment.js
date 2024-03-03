@@ -19,7 +19,7 @@ async function addComment(req, res) {
 
         const activity = new Activity({
             user : userId,
-            type : 'comment',
+            activityType : 'comment',
             content : req.body.text,
             post : postId
         })

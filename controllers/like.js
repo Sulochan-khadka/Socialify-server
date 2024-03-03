@@ -17,7 +17,7 @@ async function likePost(req, res) {
 
         const activity = new Activity({
             user : userId,
-            type : 'like',
+            activityType : 'like',
             post : postId
         })
 

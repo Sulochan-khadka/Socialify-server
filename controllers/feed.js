@@ -39,14 +39,15 @@ async function getAllFeedPosts(req, res) {
 
 
 async function getSuggestions(req, res) {
-    try {
-        
+    try{
 
     } catch (err) {
         console.error(err);
-        res.status(500).json(err);
+        res.status(500).json(err.message);
     }
 }
+
+
 
 async function getStories(req, res) {
     try {

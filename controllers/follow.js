@@ -20,10 +20,9 @@ async function getAllFollowersOfUser(req, res) {
 }
 
 const getAllFriendsOfUser = async (req, res) => {
-    const userId = req.params.id; // Assuming the user ID is passed as a parameter
+    const userId = req.params.id; 
 
     try {
-        // Find all follow documents where the given user is either the follower or the followee, and the friendship is accepted
         const friends = await Follow.find({
             $or: [
                 { follower: userId, accepted: true },
@@ -31,12 +30,10 @@ const getAllFriendsOfUser = async (req, res) => {
             ]
         });
 
-        // Extract the profiles of friends from the follow documents
         const friendIds = friends.map(friend => {
             return friend.follower.equals(userId) ? friend.followee : friend.follower;
         });
 
-        // Populate the profiles of friends
         const populatedFriends = await Profile.find({ _id: { $in: friendIds } }, { avatar: 1, name: 1, bio: 1 });
 
         res.status(200).json(populatedFriends);
