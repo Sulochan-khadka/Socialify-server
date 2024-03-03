@@ -4,7 +4,7 @@ const { Schema } = mongoose;
 const messageSchema = new Schema({
     chat: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Group',
+        ref: 'Chat',
         required : true,
     },
     sender: {

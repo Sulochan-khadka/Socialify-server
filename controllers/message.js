@@ -1,13 +1,15 @@
+const Chat = require("../models/chat");
 const Message = require("../models/message");
+const Profile = require("../models/profile");
 
 //@description     Get all Messages
 //@route           GET /api/Message/:chatId
 //@access          Protected
 const allMessages = async (req, res) => {
-    const chatId = req.params.chatId;
+    const chatId = req.params.id;
     try {
         const messages = await Message.find({ chat: chatId })
-            .populate("sender", "name avatar username")
+            .populate("sender", "name avatar")
             .populate("chat");
         res.json(messages);
     } catch (err) {
@@ -31,11 +33,12 @@ const sendMessage = async (req, res) => {
     try {
         var message = await Message.create(newMessage);
 
-        message = await message.populate("sender", "name avatar").execPopulate();
-        message = await message.populate("chat").execPopulate();
-        message = await User.populate(message, {
-            path: "chat.users",
-            select: "name avatar username",
+        message = await message.populate("sender", "name avatar");
+        message = await message.populate("chat");
+
+        message.chat = await Profile.populate(message.chat, {
+            path: "users",
+            select: "name avatar",
         });
 
         await Chat.findByIdAndUpdate(chatId, { latestMessage: message });
@@ -46,5 +49,6 @@ const sendMessage = async (req, res) => {
         res.status(500).json(err);
     }
 };
+
 
 module.exports = { allMessages, sendMessage };

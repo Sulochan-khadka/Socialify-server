@@ -1,11 +1,11 @@
 const express = require('express');
-const { accessChat, fetchChats } = require('../controllers/chat');
+const { accessChat, fetchChats, createGroupChat } = require('../controllers/chat');
 
 const router = express.Router();
 
 router
     .post('/', accessChat)
-    .post('/group/', accessChat)
+    .post('/group/', createGroupChat)
     .get('/', fetchChats)
     // .get('/:id', getOne)
     // .patch('/:id', updateOne)

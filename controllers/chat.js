@@ -30,14 +30,15 @@ const accessChat = async (req, res) => {
         res.send(isChat[0]);
     } else {
         var chatData = {
-            chatName: "sender",
+            chatName: "personal",
             groupChat: false,
             users: [receiverId, userId],
+            createdBy : userId,
         };
 
         try {
             const createdChat = await Chat.create(chatData);
-            const FullChat = await Chat.findOne({ _id: createdChat._id }).populate("users");
+            const FullChat = await createdChat.populate("users","name avatar");
             res.status(200).json(FullChat);
         } catch (err) {
             console.error(err);
@@ -52,23 +53,28 @@ const accessChat = async (req, res) => {
 const fetchChats = async (req, res) => {
     const userId = req.body.user;
     try {
-        Chat.find({ users: { $elemMatch: { $eq: userId } } })
-            .populate("users")
-            .populate("createdBy")
-            .populate("latestMessage")
-            .sort({ updatedAt: -1 })
-            .then(async (results) => {
-                results = await User.populate(results, {
-                    path: "latestMessage.sender",
-                    select: "name avatar username",
-                });
-                res.status(200).send(results);
-            });
+        const chats = await Chat.find({ users: { $elemMatch: { $eq: userId } } })
+            .populate({
+                path: "users",
+                select: "name avatar"
+            })
+            .populate({
+                path: "createdBy",
+                select: "name avatar"
+            })
+            .populate({
+                path: "latestMessage.sender",
+                select: "name avatar"
+            })
+            .sort({ updatedAt: -1 });
+
+        res.status(200).send(chats);
     } catch (err) {
         console.error(err);
         res.status(500).json(err);
     }
 };
+
 
 //@description     Create New Group Chat
 //@route           POST /api/chat/group
@@ -79,7 +85,7 @@ const createGroupChat = async (req, res) => {
         return res.status(400).send({ message: "Please Fill all the feilds" });
     }
 
-    var users = JSON.parse(req.body.users);
+    var users = req.body.users;
 
     if (users.length < 2) {
         return res
@@ -98,8 +104,8 @@ const createGroupChat = async (req, res) => {
         });
 
         const fullGroupChat = await Chat.findOne({ _id: groupChat._id })
-            .populate("users")
-            .populate("createdBy");
+            .populate("users", "name avatar")
+            .populate("createdBy", "name avatar");
 
         res.status(200).json(fullGroupChat);
     } catch (err) {
