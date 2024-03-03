@@ -1,32 +1,35 @@
 const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
-const groupSchema = new Schema({
+const chatSchema = new Schema({
     users: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Profile',
+        required : true,
     }],
     createdBy: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Profile',
+        required : true,
     },
-    date: {
-        type: Date,
-        default: Date.now,
-    },
-    groupType: {
+    chatName: {
         type: String,
-        required: [true, 'Group type is required'],
-        enum: ['private', 'public'],
-    },
-    name: {
-        type: String,
-        required: [true, 'Group name is reqired'],
+        required: [true, 'Chat name is reqired'],
     },
     description: {
         type: String,
+    },
+    groupChat : {
+        type : Boolean,
+        default : true
+    },
+    latestMessage : {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Message',
     }
-});
+},
+    {timestamps: true}
+);
 
 // GroupSchema.pre(/^find/, function (next) {
 //     this.find().populate({
@@ -36,4 +39,6 @@ const groupSchema = new Schema({
 //     next();
 // });
 
-const Group = mongoose.model('Group', groupSchema);
+const Chat = mongoose.model('Chat', chatSchema);
+
+module.exports = Chat;

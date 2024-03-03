@@ -1,14 +1,15 @@
 const express = require('express');
-require('dotenv');
+const dotenv = require('dotenv');
 const { connectMongoDB } = require('./connect');
 const cors = require('cors');
+dotenv.config();
 
-const activityRoute = require('./routes/activity')
+const activityRoute = require('./routes/activity');
 const authRoute = require('./routes/auth');
 const commentRoute = require('./routes/comment');
 const feedRoute = require('./routes/feed');
 const followRoute = require('./routes/follow');
-const groupRoute = require('./routes/group');
+const chatRoute = require('./routes/chat');
 const likeRoute = require('./routes/like');
 const messageRoute = require('./routes/message');
 const postRoute = require('./routes/post');
@@ -18,9 +19,8 @@ const userRoute = require('./routes/user');
 const app = express();
 const apiRouter = express.Router();
 
-// !: env not working
-const port = process.env.PORT || 8080;
-const uri = 'mongodb+srv://pathak:admin@cluster0.juybdyb.mongodb.net/socialify';
+const port = process.env.PORT;
+const uri = process.env.MONGO_URI;
 
 app.use(cors());
 app.use(express.json());
@@ -31,7 +31,7 @@ apiRouter.use('/auth', authRoute);
 apiRouter.use('/comment', commentRoute);
 apiRouter.use('/feed', feedRoute);
 apiRouter.use('/follow', followRoute);
-apiRouter.use('/group', groupRoute);
+apiRouter.use('/chat', chatRoute);
 apiRouter.use('/like', likeRoute);
 apiRouter.use('/message', messageRoute);
 apiRouter.use('/post', postRoute);

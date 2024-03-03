@@ -1,5 +1,5 @@
 const express = require('express');
-const { sendRequest, getAllFollowersOfUser, acceptRequest, getAllRequestsReceived } = require('../controllers/follow');
+const { sendRequest, getAllFollowersOfUser, acceptRequest, getAllRequestsReceived, getAllFriendsOfUser } = require('../controllers/follow');
 
 const router = express.Router();
 
@@ -7,7 +7,8 @@ const router = express.Router();
 
 router
     .post('/', sendRequest)
-    .get('/:id', getAllFollowersOfUser)
+    .get('/followers/:id', getAllFollowersOfUser)
+    .get('/friends/:id', getAllFriendsOfUser)
     .get('/requests/:id', getAllRequestsReceived)
     .patch('/:id', acceptRequest)
 
