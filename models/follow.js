@@ -16,12 +16,10 @@ const followSchema = new Schema({
         type : Boolean,
         default : false,
     }
-    // TODO:  time
 },
     {
         timestamps : true,
-        unique : true,
-
+        // !: ensure uniqueness
         // ! : followSchema.index({ follower: 1, followee: 1 }, { unique: true });
     }
 
