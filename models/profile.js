@@ -38,11 +38,6 @@ const profileSchema = new Schema(
     dob: {
       type: Date,
     },
-    // closeFriends: {
-    //     type: mongoose.Schema.Types.ObjectId,
-    //     ref: 'User',
-    //     select: false,
-    // },
     coverPhoto: {
       type: String,
     },

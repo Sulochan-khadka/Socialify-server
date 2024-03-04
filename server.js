@@ -9,9 +9,10 @@ const multerS3 = require('multer-s3');
 const activityRoute = require('./routes/activity');
 const authRoute = require('./routes/auth');
 const commentRoute = require('./routes/comment');
+const discoverRoute = require('./routes/discover');
 const feedRoute = require('./routes/feed');
 const followRoute = require('./routes/follow');
-const groupRoute = require('./routes/group');
+const chatRoute = require('./routes/chat');
 const likeRoute = require('./routes/like');
 const messageRoute = require('./routes/message');
 const postRoute = require('./routes/post');
@@ -77,9 +78,8 @@ const uploadToS3 = (fileData) => {
   });
 };
 
-// !: env not working
-const port = process.env.PORT || 8080;
-const uri = 'mongodb+srv://pathak:admin@cluster0.juybdyb.mongodb.net/socialify';
+const port = process.env.PORT;
+const uri = process.env.MONGO_URI;
 
 app.use(cors());
 app.use(express.json());
@@ -87,9 +87,10 @@ app.use(express.json());
 apiRouter.use('/activity', activityRoute);
 apiRouter.use('/auth', authRoute);
 apiRouter.use('/comment', commentRoute);
+apiRouter.use('/discover', discoverRoute);
 apiRouter.use('/feed', feedRoute);
 apiRouter.use('/follow', followRoute);
-apiRouter.use('/group', groupRoute);
+apiRouter.use('/chat', chatRoute);
 apiRouter.use('/like', likeRoute);
 apiRouter.use('/message', messageRoute);
 apiRouter.use('/post', postRoute);

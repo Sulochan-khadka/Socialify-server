@@ -5,7 +5,6 @@ const Post = require('../models/post');
 async function likePost(req, res) {
   const postId = req.body.post;
   const userId = req.body.user;
-  console.log('the user id is', userId);
   try {
     //checking if user has already liked post
     const existingLike = await Like.findOne({ user: userId, post: postId });

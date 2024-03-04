@@ -1,4 +1,5 @@
 const Follow = require("../models/follow");
+const Profile = require("../models/profile");
 
 async function getAllFollowersOfUser(req, res) {
     const userId = req.params.id;
@@ -8,7 +9,7 @@ async function getAllFollowersOfUser(req, res) {
             .exec();
 
         if (!friends || friends.length == 0)
-            return res.status(404).json({ 'message': 'Friends not found' });
+            return res.status(404).json({ 'message': 'Followers not found' });
 
         res.status(200).json(friends);
 
@@ -17,6 +18,30 @@ async function getAllFollowersOfUser(req, res) {
         res.status(500).json(err);
     }
 }
+
+const getAllFriendsOfUser = async (req, res) => {
+    const userId = req.params.id; 
+
+    try {
+        const friends = await Follow.find({
+            $or: [
+                { follower: userId, accepted: true },
+                { followee: userId, accepted: true }
+            ]
+        });
+
+        const friendIds = friends.map(friend => {
+            return friend.follower.equals(userId) ? friend.followee : friend.follower;
+        });
+
+        const populatedFriends = await Profile.find({ _id: { $in: friendIds } }, { avatar: 1, name: 1, bio: 1 });
+
+        res.status(200).json(populatedFriends);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Internal Server Error" });
+    }
+};
 
 async function getAllRequestsReceived(req, res) {
     const userId = req.params.id;
@@ -72,6 +97,7 @@ async function acceptRequest(req, res) {
 
 module.exports = {
     getAllFollowersOfUser,
+    getAllFriendsOfUser,
     getAllRequestsReceived,
     sendRequest,
     acceptRequest

@@ -39,9 +39,10 @@ userSchema.pre('save', async function (next) {
 });
 
 // Method to compare passwords
-userSchema.methods.comparePassword = async function (dbPassword, userPassword) {
-    return await bcrypt.compare(dbPassword, userPassword);
-};
+// userSchema.methods.comparePassword = async function(candidatePassword) {
+//     return await bcrypt.compare(candidatePassword, this.password);
+// };
+
 
 // Create a profile after user creation
 userSchema.post('save', async function (doc) {
