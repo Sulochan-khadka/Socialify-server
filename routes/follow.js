@@ -7,9 +7,9 @@ const router = express.Router();
 
 router
     .post('/', sendRequest)
-    .get('/followers/:id', getAllFollowersOfUser)
-    .get('/friends/:id', getAllFriendsOfUser)
-    .get('/requests/:id', getAllRequestsReceived)
+    .get('/followers', getAllFollowersOfUser)
+    .get('/friends', getAllFriendsOfUser)
+    .get('/requests', getAllRequestsReceived)
     .patch('/:id', acceptRequest)
 
 module.exports = router;

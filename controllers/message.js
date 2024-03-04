@@ -22,7 +22,8 @@ const allMessages = async (req, res) => {
 //@route           POST /api/Message/
 //@access          Protected
 const sendMessage = async (req, res) => {
-    const { sender, content, chatId } = req.body;
+    const { content, chatId } = req.body;
+    const sender = req.user;
 
     var newMessage = {
         sender: sender,

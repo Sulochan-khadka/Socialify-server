@@ -40,8 +40,9 @@ async function getOne(req, res) {
   }
 }
 async function createOne(req, res) {
-  const profileId = req.body.profile;
-  // console.log(profileId);
+  // const profileId = req.body.profile;
+  const profileId = req.user;
+  
   const content = req.body;
   try {
     const profile = await Profile.findById(profileId);
@@ -50,7 +51,7 @@ async function createOne(req, res) {
 
     const newPost = new Post({
       ...content,
-      // profile: profileId,
+      profile: profileId,
     });
 
     await newPost.save();

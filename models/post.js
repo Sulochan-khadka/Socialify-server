@@ -9,6 +9,7 @@ const postSchema = new Schema({
     profile: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Profile',
+        required : true,
     },
     caption: {
         type: String,

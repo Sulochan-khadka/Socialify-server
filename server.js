@@ -22,6 +22,7 @@ const cloudinary = require('cloudinary').v2;
 const { PutObjectCommand } = require('@aws-sdk/client-s3');
 const { getSignedUrl } = require('@aws-sdk/s3-request-presigner');
 const { S3Client, GetObjectCommand } = require('@aws-sdk/client-s3');
+const verifyJWT = require('./middleware/verifyJWT');
 
 const app = express();
 const apiRouter = express.Router();
@@ -84,8 +85,11 @@ const uri = process.env.MONGO_URI;
 app.use(cors());
 app.use(express.json());
 
-apiRouter.use('/activity', activityRoute);
 apiRouter.use('/auth', authRoute);
+
+apiRouter.use(verifyJWT); //authentication
+
+apiRouter.use('/activity', activityRoute);
 apiRouter.use('/comment', commentRoute);
 apiRouter.use('/discover', discoverRoute);
 apiRouter.use('/feed', feedRoute);

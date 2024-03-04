@@ -1,7 +1,8 @@
 const Follow = require("../models/follow");
 
 async function getAllFeedPosts(req, res) {
-    const userId = req.params.id;
+    // const userId = req.params.id;
+    const userId = req.user;
     try {
         const followerFriends = await Follow.find({ follower: userId, accepted: true })
             .populate({

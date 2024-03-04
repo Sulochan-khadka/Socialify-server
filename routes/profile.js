@@ -9,7 +9,7 @@ router
     // .post('/', createOne)
     // .get('/', getAll)
     .get('/:id', getOne)
-    .patch('/:id', updateOne)
+    .patch('/', updateOne)
     // .delete('/:id', deleteOne)
 
 

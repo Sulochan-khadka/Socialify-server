@@ -4,7 +4,8 @@ const Post = require('../models/post');
 
 async function likePost(req, res) {
   const postId = req.body.post;
-  const userId = req.body.user;
+  // const userId = req.body.user;
+  const userId = req.user;
   try {
     //checking if user has already liked post
     const existingLike = await Like.findOne({ user: userId, post: postId });
@@ -36,7 +37,8 @@ async function likePost(req, res) {
 // todo : delete activity if user dislikes post
 async function unlikePost(req, res) {
   const postId = req.body.post;
-  const userId = req.body.user;
+  // const userId = req.body.user;
+  const userId = req.user;
   try {
     const like = await Like.findOneAndDelete({ user: userId, post: postId });
 

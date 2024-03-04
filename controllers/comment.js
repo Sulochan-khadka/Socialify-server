@@ -4,7 +4,8 @@ const Post = require('../models/post');
 
 async function addComment(req, res) {
   const postId = req.body.post;
-  const userId = req.body.user;
+  // const userId = req.body.user;
+  const userId = req.user;
   try {
     const post = await Post.findById(postId);
 

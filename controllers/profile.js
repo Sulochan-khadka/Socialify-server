@@ -17,7 +17,8 @@ async function getOne(req, res) {
 }
 
 async function updateOne(req, res) {
-  const id = req.params.id;
+  // const id = req.params.id;
+  const id = req.user;
   const update = req.body;
 
   try {

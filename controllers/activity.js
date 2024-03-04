@@ -1,7 +1,8 @@
 const Activity = require("../models/activity");
 
 async function getAllActivitiesOfUser(req, res) {
-    const userId = req.body.user;
+    // const userId = req.body.user;
+    const userId = req.user;
     try {
         const activities = await Activity.find({ user: userId })
 

@@ -15,6 +15,12 @@ const login = async (req, res) => {
         return res.status(401).json({ message: 'User not found' })
     }
 
+    const foundProfile = await Profile.findOne({user : foundUser._id})
+
+    if (!foundProfile) {
+        return res.status(401).json({ message: 'Profile not found' })
+    }
+
     const match = await bcrypt.compare(password, foundUser.password)
 
     if (!match) return res.status(401).json({ message: 'Wrong password' })
@@ -22,7 +28,7 @@ const login = async (req, res) => {
     const accessToken = jwt.sign(
         {
             "UserInfo": {
-                "id": foundUser._id,
+                "id": foundProfile._id,
             }
         },
         process.env.ACCESS_TOKEN_SECRET,
@@ -33,14 +39,14 @@ const login = async (req, res) => {
 }
 
 
-const logout = (req, res) => {
-    const cookies = req.cookies
-    if (!cookies?.jwt) return res.sendStatus(204) 
-    res.clearCookie('jwt', { httpOnly: true, sameSite: 'None', secure: true })
-    res.json({ message: 'Cookie cleared' })
-}
+// const logout = (req, res) => {
+//     const cookies = req.cookies
+//     if (!cookies?.jwt) return res.sendStatus(204) 
+//     res.clearCookie('jwt', { httpOnly: true, sameSite: 'None', secure: true })
+//     res.json({ message: 'Cookie cleared' })
+// }
 
 module.exports = {
     login,
-    logout
+    // logout
 }

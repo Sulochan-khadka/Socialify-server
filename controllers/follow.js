@@ -2,7 +2,8 @@ const Follow = require("../models/follow");
 const Profile = require("../models/profile");
 
 async function getAllFollowersOfUser(req, res) {
-    const userId = req.params.id;
+    // const userId = req.params.id;
+    const userId = req.user;
     try {
         const friends = await Follow.find({ followee: userId, accepted: true })
             .populate({ path: 'follower', select: { 'name': 1, '_id': 1, 'avatar': 1 } })
@@ -20,7 +21,8 @@ async function getAllFollowersOfUser(req, res) {
 }
 
 const getAllFriendsOfUser = async (req, res) => {
-    const userId = req.params.id; 
+    // const userId = req.params.id; 
+    const userId = req.user;
 
     try {
         const friends = await Follow.find({
@@ -44,7 +46,8 @@ const getAllFriendsOfUser = async (req, res) => {
 };
 
 async function getAllRequestsReceived(req, res) {
-    const userId = req.params.id;
+    // const userId = req.params.id;
+    const userId = req.user;
     try {
         const requests = await Follow.find({ followee: userId, accepted: false })
             .populate({ path: 'follower', select: { 'name': 1, '_id': 1, 'avatar': 1 } })
@@ -63,7 +66,8 @@ async function getAllRequestsReceived(req, res) {
 
 // !: ensure in frontend that duplicate requests are not sent
 async function sendRequest(req, res) {
-    const follower = req.body.follower;
+    // const follower = req.body.follower;
+    const follower = req.user;
     const followee = req.body.followee;
     try {
         const request = new Follow({ followee, follower })

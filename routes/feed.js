@@ -4,7 +4,7 @@ const { getAllFeedPosts, getStories, getSuggestions } = require('../controllers/
 const router = express.Router();
 
 router
-    .get('/posts/:id', getAllFeedPosts)
+    .get('/posts/', getAllFeedPosts)
     .get('/stories',getStories)
     .get('/suggestions/:id', getSuggestions)
 

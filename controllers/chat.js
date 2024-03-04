@@ -5,7 +5,8 @@ const Profile = require("../models/profile");
 //@route           POST /api/chat/
 //@access          Protected
 const accessChat = async (req, res) => {
-    const userId  = req.body.user;
+    // const userId  = req.body.user;
+    const userId = req.user;
     const receiverId = req.body.receiver;
 
     if (!userId)
@@ -51,7 +52,8 @@ const accessChat = async (req, res) => {
 //@route           GET /api/chat/
 //@access          Protected
 const fetchChats = async (req, res) => {
-    const userId = req.body.user;
+    // const userId = req.body.user;
+    const userId = req.user;
     try {
         const chats = await Chat.find({ users: { $elemMatch: { $eq: userId } } })
             .populate({
@@ -80,7 +82,8 @@ const fetchChats = async (req, res) => {
 //@route           POST /api/chat/group
 //@access          Protected
 const createGroupChat = async (req, res) => {
-    const adminId = req.body.admin; 
+    // const adminId = req.body.admin; 
+    const adminId = req.user;
     if (!req.body.users || !req.body.name) {
         return res.status(400).send({ message: "Please Fill all the feilds" });
     }
