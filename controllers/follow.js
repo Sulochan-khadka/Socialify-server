@@ -1,4 +1,5 @@
 const Follow = require("../models/follow");
+const Notification = require("../models/notification");
 const Profile = require("../models/profile");
 
 async function getAllFollowersOfUser(req, res) {
@@ -76,6 +77,17 @@ async function sendRequest(req, res) {
         if (!request)
             return res.status(404).json({ 'message': 'Requests not send' });
 
+        const followedByUserName = await Profile.findById(follower, 'name')
+
+        const notification = new Notification({
+            user: followee,
+            type: "request",
+            content: `${followedByUserName} added you friend`,
+            requestId : request._id
+        })
+
+        await notification.save();
+
         res.status(201).json({ 'message': 'Request sent successfully' });
     } catch (err) {
         console.error(err);
@@ -86,8 +98,8 @@ async function sendRequest(req, res) {
 async function acceptRequest(req, res) {
     const followId = req.params.id;
     try {
-        const request = await Follow.findByIdAndUpdate(followId,{ accepted: true }, { new: true });
-            
+        const request = await Follow.findByIdAndUpdate(followId, { accepted: true }, { new: true });
+
         if (!request)
             return res.status(404).json({ 'message': 'Requests not accepted' });
 

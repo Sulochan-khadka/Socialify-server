@@ -1,6 +1,8 @@
 const Activity = require('../models/activity');
 const Comment = require('../models/comment');
+const Notification = require('../models/notification');
 const Post = require('../models/post');
+const Profile = require('../models/profile');
 
 async function addComment(req, res) {
   const postId = req.body.post;
@@ -25,6 +27,17 @@ async function addComment(req, res) {
     });
 
     await activity.save();
+
+    const postUser = await Post.findById(postId, 'profile');
+    const commentedByUserName = await Profile.findById(userId, 'name')
+
+    const notification = new Notification({
+      user: postUser.profile,
+      type: "comment",
+      content: `${commentedByUserName} commented on your post`
+    })
+
+    await notification.save();
 
     res.status(201).json({ message: 'Comment added successfully' });
   } catch (err) {

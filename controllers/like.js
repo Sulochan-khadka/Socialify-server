@@ -1,6 +1,8 @@
 const Activity = require('../models/activity');
 const Like = require('../models/like');
+const Notification = require('../models/notification');
 const Post = require('../models/post');
+const Profile = require('../models/profile');
 
 async function likePost(req, res) {
   const postId = req.body.post;
@@ -25,6 +27,17 @@ async function likePost(req, res) {
     });
 
     await activity.save();
+
+    const postUser = await Post.findById(postId, 'profile');
+    const likedByUserName = await Profile.findById(userId, 'name')
+
+    const notification = new Notification({
+      user: postUser.profile,
+      type: "like",
+      content: `${likedByUserName} liked your post`
+    })
+
+    await notification.save();
 
     await Post.findByIdAndUpdate(postId, { $inc: { likeCount: 1 } });
 

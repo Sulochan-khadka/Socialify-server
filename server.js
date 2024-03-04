@@ -15,9 +15,13 @@ const followRoute = require('./routes/follow');
 const chatRoute = require('./routes/chat');
 const likeRoute = require('./routes/like');
 const messageRoute = require('./routes/message');
+const notificationRoute = require('./routes/notification');
 const postRoute = require('./routes/post');
 const profileRoute = require('./routes/profile');
+const storyRoute = require('./routes/story');
 const userRoute = require('./routes/user');
+
+
 const cloudinary = require('cloudinary').v2;
 const { PutObjectCommand } = require('@aws-sdk/client-s3');
 const { getSignedUrl } = require('@aws-sdk/s3-request-presigner');
@@ -97,8 +101,10 @@ apiRouter.use('/follow', followRoute);
 apiRouter.use('/chat', chatRoute);
 apiRouter.use('/like', likeRoute);
 apiRouter.use('/message', messageRoute);
+apiRouter.use('/notificaton', notificationRoute);
 apiRouter.use('/post', postRoute);
 apiRouter.use('/profile', profileRoute);
+apiRouter.use('/story', storyRoute);
 apiRouter.use('/user', userRoute);
 app.post('/uploads', upload.single('images'), async (req, res) => {
   console.log(req, 16);
